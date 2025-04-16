@@ -5,8 +5,8 @@ import time
 import handtrackingmodulesai as htm
 import serial
 
-#ser1 = serial.Serial('COM8', 9600)
-#ser1.timeout = 1
+ser1 = serial.Serial('/dev/cu.usbmodem14101',9600) #change according to your arduino COM port
+ser1.timeout = 1
 cam = cv2.VideoCapture(0)
 frame_width = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH))
 frame_height = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -33,9 +33,12 @@ while True:
                 fingers.append(1)
             else:
                 fingers.append(0)
-        fingerCount = fingers.count(1)
-        cv2.rectangle(img, (20,255), (170,425), (0,255,250), cv2.FILLED)
-        cv2.putText(img, str(fingerCount), (45, 375), cv2.FONT_HERSHEY_PLAIN, 10, (255,0,0), 25)
+        totalFingers = fingers.count(1)
+        print(100+totalFingers)
+        ser1.write(str(100+totalFingers).encode())
+        cv2.rectangle(img, (20, 225), (170, 425), (0, 255, 250), cv2.FILLED)
+        cv2.putText(img, str(totalFingers), (45, 375), cv2.FONT_HERSHEY_PLAIN,
+                    10, (255, 0, 0), 25)
     out.write(img)
 
 
@@ -49,3 +52,4 @@ while True:
 cam.release()
 out.release()
 cv2.destroyAllWindows()
+ser1.close()

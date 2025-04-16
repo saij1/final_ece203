@@ -5,7 +5,7 @@ import HandTrackingModule as htm
 import serial
 
 # code reference from cvzone
-ser1 = serial.Serial('COM8',9600) #change according to your arduino COM port
+ser1 = serial.Serial('/dev/cu.usbmodem14101',9600) #change according to your arduino COM port
 ser1.timeout = 1
 wCam, hCam = 640, 480
 cap = cv2.VideoCapture(0)
